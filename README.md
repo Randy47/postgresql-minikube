@@ -1,6 +1,4 @@
-Senior Database Administrator Assignment
-Deploy a small Kubernetes cluster in your local environment.
-Steps
+# Deploy a small Kubernetes cluster in your local environment.
 Create a 3-Node PostgreSQL Cluster
 1. Add Bitnami Helm Repository
 First, ensure you have the Bitnami Helm repository added:
@@ -23,12 +21,10 @@ You should see multiple PostgreSQL pods, including primary and replica nodes, an
 	Create database and schema
 CREATE DATABASE irmtestdb;
 \c irmtestdb
-
 CREATE TABLE teacher (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
-
 CREATE TABLE student (
     id SERIAL PRIMARY KEY,
 	student_name TEXT,
@@ -67,7 +63,6 @@ conn.close()
 # python3 sampledb.py
 
 Deploy a Standalone PostgreSQL Instance
-Deploy Standalone PostgreSQL:
 Create a separate namespace for the standalone instance:
 kubectl create namespace postgresql-standalone
 Deploy using Helm:
@@ -79,7 +74,6 @@ persistence:
   enabled: true
   size: 8Gi
 
-# Patroni Configuration
 patroni:
   postgresql:
     parameters:
@@ -89,13 +83,13 @@ patroni:
       wal_keep_segments: 8
       archive_command: 'cp %p /bitnami/postgresql/data/wal_archive/%f'
   replicationMode: "sync"
-
 volumePermissions:
   enabled: true
 Apply changes using Helm:
 helm upgrade postgresql-cluster bitnami/postgresql \
   --namespace postgresql-cluster \
   --values values.yaml
+
 
 Ensure Configuration Persistence
 Sometimes, configurations are managed through Kubernetes ConfigMaps or Secrets, especially with Helm. Check if your Helm chart uses a ConfigMap to manage PostgreSQL configurations:
