@@ -94,13 +94,13 @@ helm upgrade postgresql-cluster bitnami/postgresql \
   --values values.yaml
 ```
 
-Ensure Configuration Persistence
+## Ensure Configuration Persistence
 Sometimes, configurations are managed through Kubernetes ConfigMaps or Secrets, especially with Helm. Check if your Helm chart uses a ConfigMap to manage PostgreSQL configurations:
 List and describe the ConfigMap:
 `kubectl get configmap -n postgresql-cluster
 kubectl describe configmap postgresql-cluster-postgresql-ha-postgresql-hooks-scripts -n postgresql-cluster`
-Configure postgresql.conf on the Postgresql Standalone
-Create or edit standalone-values.yaml:
+## Configure postgresql.conf on the Postgresql Standalone
+### Create or edit standalone-values.yaml:
 ```
 postgresqlUsername: "replica_u"
 postgresqlPassword: "replica_u"
@@ -112,21 +112,21 @@ persistence:
 volumePermissions:
   enabled: true
 ```
-Access the replica pod:
+### Access the replica pod:
 `kubectl exec -it standalone-postgresql-0 -n postgres-standalone -- /bin/bash`
-Stop the PostgreSQL service:
+### Stop the PostgreSQL service:
 `pg_ctl -D /bitnami/postgresql/data stop`
-Clear out the existing data directory:
+### Clear out the existing data directory:
 `rm -rf /bitnami/postgresql/data/*`
-Perform a base backup from the primary cluster leader:
-On the replica
+### Perform a base backup from the primary cluster leader:
+### On the replica:
 `pg_basebackup -h 10.244.0.133 -D /bitnami/postgresql/data -U repmgr -v -P --wal-method=stream`
-Create the recovery.conf in the replica with the following content:
+#### Create the recovery.conf in the replica with the following content:
 `cat > /bitnami/postgresql/data/recovery.conf <<EOF
 standby_mode = 'on'
 primary_conninfo = 'host=<primary-cluster-ip> port=5432 user=replicator password=replicator_password'
 primary_slot_name = 'replica_slot'
 trigger_file = '/tmp/postgresql.trigger'
 EOF`
-Start the PostgreSQL service on the replica:
+### Start the PostgreSQL service on the replica:
 `pg_ctl -D /bitnami/postgresql/data start`
