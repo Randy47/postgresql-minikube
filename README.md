@@ -4,7 +4,7 @@ Create a 3-Node PostgreSQL Cluster
 First, ensure you have the Bitnami Helm repository added:
 `helm repo add bitnami https://charts.bitnami.com/bitnami`
 `helm repo update`
-2. Create a Namespace (Optional)
+2. Create a Namespace
 Create a namespace to keep your PostgreSQL cluster isolated:
 `kubectl create namespace postgresql-cluster`
 3. Install the Helm Chart
