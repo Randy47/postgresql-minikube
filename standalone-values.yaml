@@ -1,0 +1,10 @@
+postgresqlUsername: "replica_u"
+postgresqlPassword: "replica_u"
+postgresqlDatabase: "irmtestdb"
+persistence:
+  enabled: true
+  size: 8Gi
+  
+volumePermissions:
+  enabled: true
+

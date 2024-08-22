@@ -1,0 +1,18 @@
+persistence:
+  enabled: true
+  size: 8Gi
+
+# Patroni Configuration
+patroni:
+  postgresql:
+    parameters:
+      wal_level: "replica"
+      max_wal_senders: 10
+      max_replication_slots: 5
+      wal_keep_segments: 8
+      archive_command: 'cp %p /bitnami/postgresql/data/wal_archive/%f'
+  replicationMode: "sync"
+
+volumePermissions:
+  enabled: true
+
