@@ -40,7 +40,8 @@ psql -h 127.0.0.1 -p 5441 -U postgres -d postgres`
 Install Python and Libraries:
 `pip install psycopg2 faker`
 Python Script to Insert Records:
-`import psycopg2
+```
+import psycopg2
 from faker import Faker
 
 conn = psycopg2.connect(
@@ -59,7 +60,8 @@ for _ in range(100000):
     )
 conn.commit()
 cursor.close()
-conn.close()`
+conn.close()
+```
 `python3 sampledb.py`
 
 Deploy a Standalone PostgreSQL Instance
